@@ -1,0 +1,38 @@
+ui:
+  show_ui: true
+
+settings:
+  timezone: "Europe/Moscow"
+
+users:
+  - name: "Иван Иванов"
+    contact:
+      method: "telegram"  # Метод связи (например, telegram, email, sms)
+      address: "@ivanivanov"
+    notifications:
+      - title: "Напоминание о встрече"
+        message: "Не забудьте про встречу в 15:00"
+        trigger:
+          type: "time"
+          schedule: "0 14 * * *"
+
+  - name: "Мария Петрова"
+    contact:
+      method: "email"
+      address: "maria@example.com"
+    notifications:
+      - title: "Отчет по проекту"
+        message: "Срок сдачи отчета - последний день месяца."
+        trigger:
+          type: "time"
+          schedule: "0 9 28-31 * *"
+
+events:
+  - name: "ServerDown"
+    regex: "ERROR 500"
+    source: "http://example.com/status"
+    check_interval: "30m"
+
+security:
+  validate_sources: true
+  allowed_methods: ["telegram"]
