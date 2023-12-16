@@ -5,10 +5,10 @@ settings:
   timezone: "Europe/Moscow"
 
 users:
-  - name: "Иван Иванов"
+  - name: "Стас"
     contact:
-      method: "telegram"  # Метод связи (например, telegram, email, sms)
-      address: "@ivanivanov"
+      method: "telegram"
+      telegramId: 916033289
     notifications:
       - title: "Напоминание о встрече"
         message: "Не забудьте про встречу в 15:00"
@@ -16,16 +16,16 @@ users:
           type: "time"
           schedule: "0 14 * * *"
 
-  - name: "Мария Петрова"
+  - name: "Гена"
     contact:
-      method: "email"
-      address: "maria@example.com"
+      method: "curl"
+      address: "http://localhost:8080/message"
     notifications:
-      - title: "Отчет по проекту"
-        message: "Срок сдачи отчета - последний день месяца."
+      - title: "Напоминание о встрече"
+        message: "Не забудьте про встречу в 15:00"
         trigger:
           type: "time"
-          schedule: "0 9 28-31 * *"
+          schedule: "0 14 * * *"
 
 events:
   - name: "ServerDown"
@@ -34,5 +34,5 @@ events:
     check_interval: "30m"
 
 security:
-  validate_sources: true
-  allowed_methods: ["telegram"]
+  - telegram:
+      API: ""
