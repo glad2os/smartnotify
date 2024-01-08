@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"regexp"
+	"smartNotify/internal/telegram"
 	"strings"
 )
 
@@ -25,6 +26,7 @@ func ProcessArgs() {
 			fmt.Println("HELP!")
 		} else if strings.HasPrefix(arg, "config=") {
 			filename := strings.SplitN(arg, "=", 2)[1]
+
 			if filename == "" {
 				log.Fatalf("Filename not defined")
 			}
@@ -40,8 +42,11 @@ func ProcessArgs() {
 				log.Fatalf("error parsing YAML: %v", err)
 			}
 
-			fmt.Println(config.UI.ShowUI)
+			message := config.Users[0].Notifications[0].Message
+			username := config.Users[0].Name
+			telegramId := config.Users[0].Contact.TelegramID
 
+			telegram.Send(telegramId, fmt.Sprintf("%s, %s", username, message))
 		} else {
 			log.Fatalf("Unrecognized argument: %s", arg)
 		}

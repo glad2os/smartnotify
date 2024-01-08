@@ -21,8 +21,9 @@ type User struct {
 }
 
 type Contact struct {
-	Method  string `yaml:"method"`
-	Address string `yaml:"address"`
+	Method     string `yaml:"method"`
+	Address    string `yaml:"address,omitempty"`
+	TelegramID int64  `yaml:"telegramId,omitempty"`
 }
 
 type Notification struct {
