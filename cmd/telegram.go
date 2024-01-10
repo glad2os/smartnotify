@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-func main() {
+func main2() {
 	bot, err := tgbotapi.NewBotAPI("")
 	if err != nil {
 		log.Panic(err)
