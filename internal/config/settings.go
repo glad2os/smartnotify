@@ -15,9 +15,9 @@ type Settings struct {
 }
 
 type User struct {
-	Name          string         `yaml:"name"`
-	Contact       Contact        `yaml:"contact"`
-	Notifications []Notification `yaml:"notifications"`
+	Name          string          `yaml:"name"`
+	Contact       Contact         `yaml:"contact"`
+	Notifications []Notifications `yaml:"notifications"`
 }
 
 type Contact struct {
@@ -26,7 +26,7 @@ type Contact struct {
 	TelegramID int64  `yaml:"telegramId,omitempty"`
 }
 
-type Notification struct {
+type Notifications struct {
 	Title   string  `yaml:"title"`
 	Message string  `yaml:"message"`
 	Trigger Trigger `yaml:"trigger"`

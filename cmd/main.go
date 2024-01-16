@@ -2,31 +2,71 @@ package main
 
 import (
 	"fmt"
+	"gopkg.in/yaml.v3"
+	"log"
+	"os"
+	"smartNotify/internal/config"
 	"smartNotify/internal/structures"
+	"smartNotify/internal/utils"
+	"sort"
 	"time"
 )
 
 func main() {
+	config := config.Config{}
+	file, err := os.ReadFile("./configs/schedule.yaml")
 
-	t0 := structures.NewTask(1, "Report 1", time.Now().Add(time.Hour*1))
-	t1 := structures.NewTask(2, "Report 2", time.Now().Add(time.Hour*1))
-	t2 := structures.NewTask(3, "Report 3", time.Now().Add(time.Hour*1))
-	t3 := structures.NewTask(4, "Report 4", time.Now().Add(time.Hour*1))
+	if err != nil {
+		log.Fatalln("Error reading filename")
+	}
 
-	root, child1 := &structures.Container{}, &structures.Container{}
+	err = yaml.Unmarshal(file, &config)
+	if err != nil {
+		log.Fatalln("Error unmarshalling YAML")
+	}
 
-	root.AddTask(*t0)
-	root.AddTask(*t1)
+	scheduleToContainer := make(map[string]*structures.Container)
+	var i = 0
 
-	child1.AddTask(*t2)
-	child1.AddTask(*t3)
+	for _, user := range config.Users {
+		for _, notification := range user.Notifications {
+			if _, exists := scheduleToContainer[notification.Trigger.Schedule]; !exists {
+				scheduleToContainer[notification.Trigger.Schedule] = &structures.Container{}
+			}
+			task := structures.NewTask(i, notification.Message, structures.PENDING)
+			i += 1
+			scheduleToContainer[notification.Trigger.Schedule].AddTask(*task)
+		}
+	}
 
-	root.AddChild(child1)
+	var sortedContainers []*structures.Container
+	for schedule, container := range scheduleToContainer {
+		nextRun, err := utils.GetNextRunTime(schedule)
+		if err != nil {
+			log.Fatalf("Error parsing CRON expression: %v", err)
+		}
+		container.DueDate = nextRun.Format(time.RFC3339) // Store as a sortable string
+		sortedContainers = append(sortedContainers, container)
+	}
+
+	// Sort by DueDate
+	sort.Slice(sortedContainers, func(i, j int) bool {
+		return sortedContainers[i].DueDate < sortedContainers[j].DueDate
+	})
+
+	// Linking containers
+	for i, parentContainer := range sortedContainers {
+		if i+1 < len(sortedContainers) {
+			childContainer := sortedContainers[i+1]
+			parentContainer.AddChild(childContainer)
+		}
+	}
 
 	agent := &structures.Agent{}
-	agent.MoveToUndone(root)
 
-	firstUnDoneContainer := agent.GetFirstUndoneContainer()
+	for _, container := range sortedContainers {
+		agent.MoveToUndone(container)
+	}
 
-	fmt.Printf("%+v\n", firstUnDoneContainer)
+	fmt.Printf("%+v\n", agent.GetFirstUndoneContainer())
 }

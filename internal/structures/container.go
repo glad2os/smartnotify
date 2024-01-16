@@ -8,6 +8,7 @@ type IContainer interface {
 type Container struct {
 	Children []*Container
 	Tasks    []Task
+	DueDate  string
 }
 
 func (container *Container) AddTask(task Task) {
@@ -16,4 +17,8 @@ func (container *Container) AddTask(task Task) {
 
 func (container *Container) AddChild(child *Container) {
 	container.Children = append(container.Children, child)
+}
+
+func (container *Container) SetDueDate(time *string) {
+	container.DueDate = *time
 }

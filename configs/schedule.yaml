@@ -5,28 +5,58 @@ settings:
   timezone: "Europe/Moscow"
 
 users:
-  - name: "Стас"
+  - name: "glad2os Schedule"
     contact:
       method: "telegram"
       telegramId: 916033289
     notifications:
-      - title: "Напоминание о встрече"
-        message: "Не забудьте про встречу в 15:00"
+      - title: "Напоминание за 2 часа до пары"
+        message: "DevOps Implementation"
         trigger:
           type: "time"
-          schedule: "0 14 * * *"
+          schedule: "30 8 * * 1" # 10:30 am every Monday
 
-  - name: "Гена"
-    contact:
-      method: "curl"
-      address: "http://localhost:8080/message"
-    notifications:
-      - title: "Напоминание о встрече"
-        message: "Не забудьте про встречу в 15:00"
+      - title: "Напоминание за 40 минут до пары"
+        message: "DevOps Implementation"
         trigger:
           type: "time"
-          schedule: "0 14 * * *"
+          schedule: "50 8 * * 1" # 11:50 am every Monday
 
+      - title: "Напоминание за 2 часа до Employment Skills II"
+        message: "Employment Skills II Class Starting Soon"
+        trigger:
+          type: "time"
+          schedule: "30 16 * * 1" # 4:30 pm every Monday
+
+      - title: "Напоминание за 30 минут до Employment Skills II"
+        message: "Employment Skills II Class Starting Soon"
+        trigger:
+          type: "time"
+          schedule: "0 18 * * 1" # 6:00 pm every Monday
+
+      - title: "Напоминание за 2 часа до класса по линейной алгебре и статистике во вторник в Progress E2-12"
+        message: "Linear Algebra & Statistics Tuesday Class in Progress E2-12 Starting Soon"
+        trigger:
+          type: "time"
+          schedule: "30 6 * * 2" # 6:30 am every Tuesday
+
+      - title: "Напоминание за 30 минут до класса по линейной алгебре и статистике во вторник в Progress E2-12"
+        message: "Linear Algebra & Statistics Tuesday Class in Progress E2-12 Starting Soon"
+        trigger:
+          type: "time"
+          schedule: "0 8 * * 2" # 8:00 am every Tuesday
+
+      - title: "Напоминание за 2 часа до онлайн-класса по линейной алгебре и статистике в четверг"
+        message: "Linear Algebra & Statistics Thursday Online Class Starting Soon"
+        trigger:
+          type: "time"
+          schedule: "30 12 * * 4" # 12:30 pm every Thursday
+
+      - title: "Напоминание за 30 минут до онлайн-класса по линейной алгебре и статистике в четверг"
+        message: "Linear Algebra & Statistics Thursday Online Class Starting Soon"
+        trigger:
+          type: "time"
+          schedule: "0 14 * * 4" # 2:00 pm every Thursday
 events:
   - name: "ServerDown"
     regex: "ERROR 500"
